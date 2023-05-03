@@ -15,7 +15,8 @@ function onSubmit(e) {
     .post("hhtp://localhost:3000/user/signup", signupObj)
     .then((response) => {
       console.log(response.data.message);
-      alert(`User signup sucessfull`);
+      //alert(`User signup sucessfull`);
+      alert(response.data.message);
       window.location.href = "./html/login";
     })
     .catch((err) => {
