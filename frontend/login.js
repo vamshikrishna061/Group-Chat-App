@@ -16,6 +16,7 @@ function onSubmit(e) {
     .post("http://localhost:3000/user/login", loginObj)
     .then((response) => {
       alert(response.data.message);
+      console.log(response.data.token);
     })
     .catch((err) => {
       console.log(err);
