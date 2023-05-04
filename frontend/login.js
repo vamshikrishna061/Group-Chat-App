@@ -16,7 +16,8 @@ function onSubmit(e) {
     .post("http://localhost:3000/user/login", loginObj)
     .then((response) => {
       alert(response.data.message);
-      console.log(response.data.token);
+      localStorage.setItem('token',response.data.token);
+      window.location.href= './chat.html';
     })
     .catch((err) => {
       console.log(err);
