@@ -6,6 +6,9 @@ exports.postUser = async (req, res, next) => {
   try {
     const { name, email,number, password } = req.body;
     const userExist = await User.findAll({ where: { email } });
+    // if(!userExist.length){
+    //   userExist = await User.findAll({where: {number}});
+    // }
     if (userExist && userExist.length) {
       res.status(201).json({ message: "User already Exists, Please Login" });
     } else {
@@ -36,7 +39,8 @@ exports.postLogin = async (req, res, next) => {
           if (err) {
             throw new Error("Something went wrong");
           }
-          if (result) { res.status(201).json({ message: "User logged in successfully", success: true, 
+          if (result) { res.status(201).json({ message: "User logged in successfully", 
+          success: true, 
           token: generateAccessToken( userExist.dataValues.id, userExist.dataValues.name), userId:userExist.dataValues.id});
           } else {
             res.status(401).json({ error: "User not authorized. Wrong password", success: false});

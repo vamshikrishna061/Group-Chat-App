@@ -1,13 +1,19 @@
 const Chat = require('../models/chat');
+const User = require('../models/user')
 const jwt = require('jsonwebtoken');
 
 
 exports.getMessage = async (req,res,next)=>{
     try{
-    const {id, name} = req.user;
-
-    const mesg = await Chat.findAll({where: {userId:id}});
-    res.status(200).json({mesg, name});
+    const {id} = req.user;
+    
+    const mesg = await Chat.findAll({
+        include:[{
+            model: User,
+            attributes: ['id', 'name']
+        }]
+    });
+    res.status(200).json({mesg});
     } catch(error) {
         console.log(error);
         res.status(500).json({error,success: false});
