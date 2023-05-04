@@ -10,7 +10,13 @@ const userRoutes = require("./routes/user");
 const sequelize = require("./utli/database");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    //credentials: true,              
+    methods: ["GET", "POST"],
+  })
+);
 app.use(bodyParser.json());
 
 app.use("/user", userRoutes);
