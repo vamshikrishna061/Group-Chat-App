@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 exports.getMessage = async (req,res,next)=>{
     try{
     const {id} = req.user;
-    
-    const mesg = await Chat.findAll({
+    const lastId = +req.query.lastId || 0;
+    const mesg = await Chat.findAll({offset: lastId,
         include:[{
             model: User,
             attributes: ['id', 'name']
