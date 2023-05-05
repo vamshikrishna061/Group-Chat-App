@@ -14,4 +14,5 @@ const chat = sequelize.define('chat', {
     }
 });
 
+
 module.exports = chat;

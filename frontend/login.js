@@ -4,6 +4,7 @@ login.addEventListener("submit", onSubmit);
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 
+
 function onSubmit(e) {
   e.preventDefault();
 
@@ -12,11 +13,13 @@ function onSubmit(e) {
     password: password.value,
   };
 
+  
   axios
     .post("http://localhost:3000/user/login", loginObj)
     .then((response) => {
       alert(response.data.message);
       localStorage.setItem('token',response.data.token);
+      localStorage.setItem('userId',response.data.userId);
       window.location.href= './chat.html';
     })
     .catch((err) => {

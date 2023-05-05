@@ -28,6 +28,7 @@ app.use("/message", messageRoutes);
 User.hasMany(Chat);
 Chat.belongsTo(User);
 
+
 sequelize
   .sync()
    //.sync({ force: true })

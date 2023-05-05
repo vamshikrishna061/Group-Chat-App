@@ -10,7 +10,6 @@ function onSubmit(e) {
     password: document.getElementById("password").value,
     number: document.getElementById("number").value,
   };
-
   axios
     .post("http://localhost:3000/user/signup", signupObj)
     .then((response) => {

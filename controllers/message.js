@@ -20,6 +20,7 @@ exports.getMessage = async (req,res,next)=>{
     }
 }
 
+
 exports.postMessage = async (req,res,next)=>{
     try{
     const {id,name} = req.user;

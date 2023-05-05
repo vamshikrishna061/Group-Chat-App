@@ -30,4 +30,5 @@ password: {
 
 });
 
+
 module.exports = User;
