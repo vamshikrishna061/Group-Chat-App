@@ -1,11 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+
 const dotenv = require("dotenv");
 dotenv.config();
 
 const User = require("./models/user");
 const Chat = require("./models/chat");
+const Group = require("./models/group");
+const Groupmembers = require("./models/grpmembers");
 
 const userRoutes = require("./routes/user");
 const messageRoutes = require("./routes/message");
@@ -28,6 +31,17 @@ app.use("/message", messageRoutes);
 User.hasMany(Chat);
 Chat.belongsTo(User);
 
+User.hasMany(Group);
+Group.belongsTo(User);
+
+Group.hasMany(Chat);
+Chat.belongsTo(Group);
+
+User.hasMany(Groupmembers);
+Groupmembers.belongsTo(User);
+
+Group.hasMany(Groupmembers);
+Groupmembers.belongsTo(Group);
 
 sequelize
   .sync()
