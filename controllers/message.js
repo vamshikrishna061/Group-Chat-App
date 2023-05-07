@@ -4,7 +4,6 @@ const Group = require('../models/group');
 const Groupmembers = require('../models/grpmembers');
 const jwt = require('jsonwebtoken');
 
-
 exports.getMessage = async (req,res,next)=>{
     try{
     const {id} = req.user;
@@ -43,8 +42,6 @@ exports.postGroup = async (req,res,next)=>{
     try{
         const { gName } = req.body;
         const { id } = req.user;
-
-
         const newGroup = await Group.create({gName,userId:id});
         const nGId =  newGroup.dataValues.id;
         const groupmem = await Groupmembers.create({userId:id, groupId:nGId, isAdmin:true});
@@ -80,7 +77,7 @@ function generateAccessToken(id){
 
 exports.getInvite = async(req,res,next) => {
     const gId = req.query.gId;
-    //console.log(gId);
+    
     res.status(200).json({
         secretToken: generateAccessToken(gId)
     });
@@ -88,12 +85,11 @@ exports.getInvite = async(req,res,next) => {
 
 exports.getJoinGroup = async(req,res,next) => {
     const gId = req.query.gId;
-    //Complete Code Here
+   
     const uId = req.user.id;
     const groupmem = await Groupmembers.create({userId:uId, groupId:gId,isAdmin:false});
     res.status(200).json({groupmem,success:true});
 }
-
 
 exports.getAddUser = async (req,res,next) => {
     try{
@@ -105,7 +101,7 @@ exports.getAddUser = async (req,res,next) => {
         if(!isAdm.dataValues.isAdmin){
             return res.status(401).json({success:false,error:'Is not admin'});
         } 
-        console.log(by,value);
+        
         let userDetails = null;
         if(by=='name'){
             userDetails = await User.findOne({where:{name:value},attributes:['id']});
@@ -155,7 +151,6 @@ exports.getRemU = async(req,res,next)=>{
         const uId = req.query.id;
         const gId = req.query.gId;
 
-
         const remU = await Groupmembers.destroy({
             where:{groupId:gId,userId:uId}
         });
@@ -166,12 +161,10 @@ exports.getRemU = async(req,res,next)=>{
     }
 }
 
-
 exports.getMakeA = async(req,res,next)=>{
     try{
         const uId = req.query.id;
         const gId = req.query.gId;
-
 
         const isAdmi = await Groupmembers.update({isAdmin:true},{
             where:{groupId:gId,userId:uId}

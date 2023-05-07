@@ -1,6 +1,10 @@
+const path = require("path");
+const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const helmet = require("helmet");
+const morgan = require("morgan");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -15,17 +19,22 @@ const messageRoutes = require("./routes/message");
 
 const sequelize = require("./utli/database");
 
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
+
 const app = express();
+app.use(helmet());
 app.use(cors({
     origin: "*",
     //credentials: true,              
     methods: ["GET", "POST"],
   })
 );
+app.use(morgan('combined', {stream: accessLogStream}));
 app.use(bodyParser.json());
 
 app.use("/user", userRoutes);
 app.use("/message", messageRoutes);
+
 
 
 User.hasMany(Chat);

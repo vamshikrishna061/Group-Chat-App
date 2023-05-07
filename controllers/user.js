@@ -22,11 +22,9 @@ exports.postUser = async (req, res, next) => {
 };
 
 
-
 function generateAccessToken(id,name){
   return jwt.sign({id,name},process.env.TOKEN_SECRET);
 }
-
 
 exports.postLogin = async (req, res, next) => {
   try {
