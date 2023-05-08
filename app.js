@@ -22,13 +22,14 @@ const sequelize = require("./utli/database");
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
 
 const app = express();
-app.use(helmet());
+const httpServer = require("http").createServer(app);
+const socketio = require("socket.io")
+const io = socketio(httpServer);
 app.use(cors({
-    origin: "*",
-    //credentials: true,              
-    methods: ["GET", "POST"],
-  })
-);
+    origin : '*',
+    methods: ['GET', 'POST']
+}));
+app.use(helmet());
 app.use(morgan('combined', {stream: accessLogStream}));
 app.use(bodyParser.json());
 
@@ -56,7 +57,7 @@ sequelize
   .sync()
    //.sync({ force: true })
   .then((res) => {
-    app.listen(3000, (err) => {
+    httpServer.listen(3000, (err) => {
       if (err) console.log(err);
       console.log("Server is listening for requests");
     });
@@ -64,4 +65,10 @@ sequelize
 
   .catch((err) => {
     console.log(err);
+  });
+
+  io.on('connection', socket => {
+    socket.on('send-chat-message', message => {
+      socket.broadcast.emit('chat-message', message)
+    });
   });
